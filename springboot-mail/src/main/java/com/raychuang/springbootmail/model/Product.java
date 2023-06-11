@@ -1,14 +1,17 @@
 package com.raychuang.springbootmail.model;
 
 
-import java.sql.Timestamp;
+import com.raychuang.springbootmail.constant.ProductCategory;
+
 import java.util.Date;
 
 //實作與資料庫中product table 相對應的變數
 public class Product {
     private Integer productId;
     private String productName;
-    private String category;
+    //使用String類型來存category有一個缺點 就是我們無法在程式中就知道有哪幾個類別
+    //private String category;
+    private ProductCategory category;
     private String image_url;
     private Integer price;
     private Integer stock;
@@ -32,11 +35,11 @@ public class Product {
         this.productName = productName;
     }
 
-    public String getCategory() {
+    public ProductCategory getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(ProductCategory category) {
         this.category = category;
     }
 
