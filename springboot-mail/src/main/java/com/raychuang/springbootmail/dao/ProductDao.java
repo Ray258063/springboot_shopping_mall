@@ -3,6 +3,8 @@ package com.raychuang.springbootmail.dao;
 import com.raychuang.springbootmail.dto.ProductRequest;
 import com.raychuang.springbootmail.model.Product;
 
+import java.util.List;
+
 public interface ProductDao {
 
     //根據productId 去資料庫查詢這個ID的商品數據出來
@@ -12,5 +14,7 @@ public interface ProductDao {
     //根據商品id 以及 request body 去修改商品數據
     void updateProduct(Integer productId, ProductRequest productRequest);
     void deleteProduct(Integer productId);
+
+    List<Product> getProducts();
 
 }

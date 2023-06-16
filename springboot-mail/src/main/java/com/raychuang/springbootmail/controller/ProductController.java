@@ -9,12 +9,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 public class ProductController {
 
     @Autowired
     private ProductService productService;
+    //admin 操作 CRUD
     //查詢商品
     @GetMapping("/products/{productId}")
     public ResponseEntity<Product> getProduct(@PathVariable Integer productId){
@@ -56,6 +58,15 @@ public class ProductController {
     public ResponseEntity<Product> deleteProduct(@PathVariable Integer productId){
         productService.deleteProduct(productId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    //N-user操作
+
+    //取得所有商品資料
+    @GetMapping("/products")
+    public ResponseEntity<List<Product> >getProducts(){
+        List<Product> productList= productService.getProducts();
+        return ResponseEntity.status(HttpStatus.OK).body(productList);
     }
 
 
