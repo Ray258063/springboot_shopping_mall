@@ -11,5 +11,6 @@ public interface ProductDao {
     Integer createProduct(ProductRequest productRequest);
     //根據商品id 以及 request body 去修改商品數據
     void updateProduct(Integer productId, ProductRequest productRequest);
+    void deleteProduct(Integer productId);
 
 }
