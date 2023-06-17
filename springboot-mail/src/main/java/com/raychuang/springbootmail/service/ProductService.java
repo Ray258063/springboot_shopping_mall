@@ -1,5 +1,6 @@
 package com.raychuang.springbootmail.service;
 
+import com.raychuang.springbootmail.constant.ProductCategory;
 import com.raychuang.springbootmail.dto.ProductRequest;
 import com.raychuang.springbootmail.model.Product;
 
@@ -11,6 +12,6 @@ public interface ProductService {
     void updateProduct(Integer productId, ProductRequest productRequest);
     void deleteProduct(Integer productId);
 
-    List<Product> getProducts();
+    List<Product> getProducts(ProductCategory productCategory, String search);
 
 }

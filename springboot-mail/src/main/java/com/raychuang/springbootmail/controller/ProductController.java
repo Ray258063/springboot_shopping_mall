@@ -1,5 +1,6 @@
 package com.raychuang.springbootmail.controller;
 
+import com.raychuang.springbootmail.constant.ProductCategory;
 import com.raychuang.springbootmail.dto.ProductRequest;
 import com.raychuang.springbootmail.model.Product;
 import com.raychuang.springbootmail.service.ProductService;
@@ -39,7 +40,7 @@ public class ProductController {
 
     //修改商品數據
     @PutMapping("/products/{productId}")
-    public ResponseEntity<Product> updataProduct(@PathVariable Integer productId,
+    public ResponseEntity<Product> updateProduct(@PathVariable Integer productId,
                                                  @RequestBody @Valid ProductRequest productRequest){
         //檢查Product是否存在
         Product product=productService.getProductById(productId);
@@ -60,14 +61,29 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    //N-user操作
-
+    //N-user操作v1
     //取得所有商品資料
+//    @GetMapping("/products")
+//    public ResponseEntity<List<Product> >getProducts(){
+//        List<Product> productList= productService.getProducts();
+//        return ResponseEntity.status(HttpStatus.OK).body(productList);
+//    }
+    //N-user操作v2
+    //取得所有商品資料
+    //根據前端傳入的種類 進行查詢
+    //根據前端傳入的關鍵字進行查詢
     @GetMapping("/products")
-    public ResponseEntity<List<Product> >getProducts(){
-        List<Product> productList= productService.getProducts();
+    public ResponseEntity<List<Product> >getProducts(
+            //productCategory不是必要參數 沒有的話就查詢全部的資料
+            //(1) 根據類別查詢
+            //(2) 根據打的字查詢
+            @RequestParam(required = false) ProductCategory productCategory,
+            @RequestParam(required = false) String search
+            ){
+        List<Product> productList= productService.getProducts(productCategory,search);
         return ResponseEntity.status(HttpStatus.OK).body(productList);
     }
+
 
 
 
