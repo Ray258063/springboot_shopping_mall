@@ -1,6 +1,7 @@
 package com.raychuang.springbootmail.dao;
 
 import com.raychuang.springbootmail.constant.ProductCategory;
+import com.raychuang.springbootmail.dto.ProductQueryParams;
 import com.raychuang.springbootmail.dto.ProductRequest;
 import com.raychuang.springbootmail.model.Product;
 
@@ -16,6 +17,6 @@ public interface ProductDao {
     void updateProduct(Integer productId, ProductRequest productRequest);
     void deleteProduct(Integer productId);
 
-    List<Product> getProducts(ProductCategory productCategory, String search);
+    List<Product> getProducts(ProductQueryParams productQueryParams);
 
 }

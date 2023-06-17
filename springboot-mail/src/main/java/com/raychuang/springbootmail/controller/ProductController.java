@@ -1,6 +1,7 @@
 package com.raychuang.springbootmail.controller;
 
 import com.raychuang.springbootmail.constant.ProductCategory;
+import com.raychuang.springbootmail.dto.ProductQueryParams;
 import com.raychuang.springbootmail.dto.ProductRequest;
 import com.raychuang.springbootmail.model.Product;
 import com.raychuang.springbootmail.service.ProductService;
@@ -80,7 +81,12 @@ public class ProductController {
             @RequestParam(required = false) ProductCategory productCategory,
             @RequestParam(required = false) String search
             ){
-        List<Product> productList= productService.getProducts(productCategory,search);
+        //將前端傳進來的參數set到ProductQueryParams裡
+        ProductQueryParams productQueryParams=new ProductQueryParams();
+        productQueryParams.setProductCategory(productCategory);
+        productQueryParams.setSearch(search);
+
+        List<Product> productList= productService.getProducts(productQueryParams);
         return ResponseEntity.status(HttpStatus.OK).body(productList);
     }
 

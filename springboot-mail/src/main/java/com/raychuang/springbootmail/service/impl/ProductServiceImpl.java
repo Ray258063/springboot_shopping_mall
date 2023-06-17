@@ -2,6 +2,7 @@ package com.raychuang.springbootmail.service.impl;
 
 import com.raychuang.springbootmail.constant.ProductCategory;
 import com.raychuang.springbootmail.dao.ProductDao;
+import com.raychuang.springbootmail.dto.ProductQueryParams;
 import com.raychuang.springbootmail.dto.ProductRequest;
 import com.raychuang.springbootmail.model.Product;
 import com.raychuang.springbootmail.service.ProductService;
@@ -36,7 +37,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> getProducts(ProductCategory productCategory, String search) {
-        return productDao.getProducts(productCategory, search);
+    public List<Product> getProducts(ProductQueryParams productQueryParams) {
+        return productDao.getProducts(productQueryParams);
     }
 }
