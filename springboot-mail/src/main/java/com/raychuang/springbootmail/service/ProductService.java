@@ -19,5 +19,7 @@ public interface ProductService {
     //因此寫一個物件 然後設定 變數的getter and setter
     List<Product> getProducts(ProductQueryParams productQueryParams);
 
+    Integer countProduct(ProductQueryParams productQueryParams);
+
 
 }

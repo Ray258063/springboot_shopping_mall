@@ -5,6 +5,7 @@ import com.raychuang.springbootmail.dto.ProductQueryParams;
 import com.raychuang.springbootmail.dto.ProductRequest;
 import com.raychuang.springbootmail.model.Product;
 import com.raychuang.springbootmail.service.ProductService;
+import com.raychuang.springbootmail.util.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -78,7 +79,7 @@ public class ProductController {
     //根據前端傳入的種類 進行查詢
     //根據前端傳入的關鍵字進行查詢
     @GetMapping("/products")
-    public ResponseEntity<List<Product> >getProducts(
+    public ResponseEntity<Page<Product>>getProducts(
             //productCategory不是必要參數 沒有的話就查詢全部的資料
             //(1) 根據類別查詢
             //(2) 根據打的字查詢
@@ -104,8 +105,21 @@ public class ProductController {
         productQueryParams.setLimit(limit);
         productQueryParams.setOffset(offset);
 
+        //取得 product list
+
         List<Product> productList= productService.getProducts(productQueryParams);
-        return ResponseEntity.status(HttpStatus.OK).body(productList);
+        //取得 product 總數
+        Integer total=productService.countProduct(productQueryParams);
+
+        //分頁
+        Page page=new Page();
+        page.setLimit(limit);
+        page.setOffset(offset);
+        page.setTotal(total);
+        page.setResult(productList);
+
+
+        return ResponseEntity.status(HttpStatus.OK).body(page);
     }
 
 
