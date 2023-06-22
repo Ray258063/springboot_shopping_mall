@@ -8,12 +8,16 @@ import com.raychuang.springbootmail.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController
+@Validated //才能使用 Min and Max 註解
 public class ProductController {
 
     @Autowired
@@ -78,14 +82,18 @@ public class ProductController {
             //productCategory不是必要參數 沒有的話就查詢全部的資料
             //(1) 根據類別查詢
             //(2) 根據打的字查詢
-            //#查詢條件 filtering
+            //# 查詢條件 filtering
             @RequestParam(required = false) ProductCategory productCategory,
             @RequestParam(required = false) String search,
             //根據什麼欄位來排序 例如商品價格 商品創建時間
-            //排序 sorting
+            //# 排序 sorting
             @RequestParam(defaultValue = "created_date") String orderBy, //如果前端沒有傳遞參數進來 orderBy 就是預設的create_date
             //選則升冪 or 降冪
-            @RequestParam(defaultValue = "desc") String sort //預設使用降冪排序
+            @RequestParam(defaultValue = "desc") String sort, //預設使用降冪排序
+            // #分頁 pagination
+            // 對應到 sql 語句的limit and offset 限制 以及 跳過幾筆
+            @RequestParam(defaultValue = "5") @Max(1000) @Min(0) Integer limit, //設定前端傳入的範圍
+            @RequestParam (defaultValue = "0") @Min(0) Integer offset //分頁 假如第二頁的5筆 就是 offset=5
             ){
         //將前端傳進來的參數set到ProductQueryParams裡
         ProductQueryParams productQueryParams=new ProductQueryParams();
@@ -93,6 +101,8 @@ public class ProductController {
         productQueryParams.setSearch(search);
         productQueryParams.setOrderBy(orderBy);
         productQueryParams.setSort(sort);
+        productQueryParams.setLimit(limit);
+        productQueryParams.setOffset(offset);
 
         List<Product> productList= productService.getProducts(productQueryParams);
         return ResponseEntity.status(HttpStatus.OK).body(productList);
