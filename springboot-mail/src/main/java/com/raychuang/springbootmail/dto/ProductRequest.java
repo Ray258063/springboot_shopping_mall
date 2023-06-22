@@ -4,6 +4,8 @@ import com.raychuang.springbootmail.constant.ProductCategory;
 
 import javax.validation.constraints.NotNull;
 
+//前端傳入商品數據 轉入資料庫
+
 public class ProductRequest {
     @NotNull
     private String productName;

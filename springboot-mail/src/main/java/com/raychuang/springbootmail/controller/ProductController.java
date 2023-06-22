@@ -78,13 +78,21 @@ public class ProductController {
             //productCategory不是必要參數 沒有的話就查詢全部的資料
             //(1) 根據類別查詢
             //(2) 根據打的字查詢
+            //#查詢條件 filtering
             @RequestParam(required = false) ProductCategory productCategory,
-            @RequestParam(required = false) String search
+            @RequestParam(required = false) String search,
+            //根據什麼欄位來排序 例如商品價格 商品創建時間
+            //排序 sorting
+            @RequestParam(defaultValue = "created_date") String orderBy, //如果前端沒有傳遞參數進來 orderBy 就是預設的create_date
+            //選則升冪 or 降冪
+            @RequestParam(defaultValue = "desc") String sort //預設使用降冪排序
             ){
         //將前端傳進來的參數set到ProductQueryParams裡
         ProductQueryParams productQueryParams=new ProductQueryParams();
         productQueryParams.setProductCategory(productCategory);
         productQueryParams.setSearch(search);
+        productQueryParams.setOrderBy(orderBy);
+        productQueryParams.setSort(sort);
 
         List<Product> productList= productService.getProducts(productQueryParams);
         return ResponseEntity.status(HttpStatus.OK).body(productList);
