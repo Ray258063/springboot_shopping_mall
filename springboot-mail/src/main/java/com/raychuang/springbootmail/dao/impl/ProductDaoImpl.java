@@ -98,16 +98,7 @@ public class ProductDaoImpl implements ProductDao {
 
         Map<String,Object> map=new HashMap<>();
         //查詢條件
-        //假如前端有category參數才去使用根據category下sql語句
-        if(productQueryParams.getProductCategory()!=null){
-            sql=sql+" AND category=:category";
-            map.put("category",productQueryParams.getProductCategory().name());
-        }
-        if(productQueryParams.getSearch()!=null){
-            //%不能寫在sql語句裡 必須寫在map
-            sql=sql+" AND product_name LIKE :search";
-            map.put("search","%"+productQueryParams.getSearch()+"%");
-        }
+        sql=addFilteringSql(sql,map,productQueryParams);
         //排序
         //拼接sql語句記得在前後都要保留空白
         sql=sql+" ORDER BY "+productQueryParams.getOrderBy()+" "+productQueryParams.getSort();
@@ -127,6 +118,15 @@ public class ProductDaoImpl implements ProductDao {
         String sql="SELECT count(*) FROM product WHERE 1=1";
         Map<String,Object> map=new HashMap<>();
         //查詢條件
+        sql=addFilteringSql(sql,map,productQueryParams);
+        //用來取count的時候
+        //將count的值轉成 Integer的返回值
+        Integer total=namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class);
+        return total;
+    }
+
+    private String addFilteringSql(String sql, Map<String,Object> map,ProductQueryParams productQueryParams){
+        //查詢條件
         //假如前端有category參數才去使用根據category下sql語句
         if(productQueryParams.getProductCategory()!=null){
             sql=sql+" AND category=:category";
@@ -137,9 +137,6 @@ public class ProductDaoImpl implements ProductDao {
             sql=sql+" AND product_name LIKE :search";
             map.put("search","%"+productQueryParams.getSearch()+"%");
         }
-        //用來取count的時候
-        //將count的值轉成 Integer的返回值
-        Integer total=namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class);
-        return total;
+        return sql;
     }
 }
