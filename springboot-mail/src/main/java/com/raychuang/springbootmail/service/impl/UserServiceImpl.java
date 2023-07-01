@@ -2,6 +2,7 @@ package com.raychuang.springbootmail.service.impl;
 
 
 import com.raychuang.springbootmail.dao.UserDao;
+import com.raychuang.springbootmail.dto.UserLoginRequest;
 import com.raychuang.springbootmail.dto.UserRegisterRequest;
 import com.raychuang.springbootmail.model.User;
 import com.raychuang.springbootmail.service.UserService;
@@ -41,5 +42,25 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(Integer userId) {
         return userDao.getUserById(userId);
+    }
+
+    @Override
+    public User login(UserLoginRequest userLoginRequest) {
+        //根據前端傳入的email值到資料庫裡尋找那一筆user數據
+        User user=userDao.getUserByEmail(userLoginRequest.getEmail());
+        if(user==null){
+            log.warn("該 email {} 尚未註冊", userLoginRequest.getEmail());
+            //強制停止前端的請求
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        if(user.getPassword().equals(userLoginRequest.getPassword())){
+            return user;
+        }
+
+        else{
+            log.warn("email {} 的密碼不正確",userLoginRequest.getEmail());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
     }
 }
