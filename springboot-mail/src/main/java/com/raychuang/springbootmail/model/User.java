@@ -1,11 +1,16 @@
 package com.raychuang.springbootmail.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 
 //對應到資料庫中的 user資料表
 public class User {
     private Integer userId;
+    @JsonProperty("e_mail")//改變Json字串的key
     private String email;
+    @JsonIgnore //不會將password值回傳給前端
     private String password;
     private Date createdDate;
     private Date lastModifiedDate;
