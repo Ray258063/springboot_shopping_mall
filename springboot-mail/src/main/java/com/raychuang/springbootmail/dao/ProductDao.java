@@ -21,5 +21,7 @@ public interface ProductDao {
     List<Product> getProducts(ProductQueryParams productQueryParams);
     //計算
     Integer countProduct(ProductQueryParams productQueryParams);
+    //更新商品庫存
+    void updateStock(Integer productId, Integer stock);
 
 }

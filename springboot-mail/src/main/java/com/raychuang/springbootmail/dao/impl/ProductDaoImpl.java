@@ -129,6 +129,19 @@ public class ProductDaoImpl implements ProductDao {
         return total;
     }
 
+    @Override
+    public void updateStock(Integer productId, Integer stock) {
+        String sql="UPDATE product SET stock=:stock, last_modified_date=:lastModifiedDate " +
+                "WHERE product_id=:productId ";
+        Map<String,Object> map=new HashMap<>();
+        map.put("stock",stock);
+        Date date=new Date();
+        map.put("lastModifiedDate",date);
+        map.put("productId",productId);
+        namedParameterJdbcTemplate.update(sql,map);
+    }
+
+    //方法
     private String addFilteringSql(String sql, Map<String,Object> map,ProductQueryParams productQueryParams){
         //查詢條件
         //假如前端有category參數才去使用根據category下sql語句
