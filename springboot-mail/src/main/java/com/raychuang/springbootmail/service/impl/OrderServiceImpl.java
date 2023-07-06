@@ -5,6 +5,7 @@ import com.raychuang.springbootmail.dao.ProductDao;
 import com.raychuang.springbootmail.dao.UserDao;
 import com.raychuang.springbootmail.dto.BuyItem;
 import com.raychuang.springbootmail.dto.CreateOrderRequest;
+import com.raychuang.springbootmail.dto.OrderQueryParams;
 import com.raychuang.springbootmail.model.Order;
 import com.raychuang.springbootmail.model.OrderItem;
 import com.raychuang.springbootmail.model.Product;
@@ -95,6 +96,27 @@ public class OrderServiceImpl implements OrderService {
         //一張order裡包含多個orderitem
 
         return order;
+    }
+
+    @Override
+    public List<Order> getOrders(OrderQueryParams orderQueryParams) {
+
+        //訂單
+        List<Order> orderList=orderDao.getOrders(orderQueryParams);
+
+        //訂單詳細訂購的品項
+        for(Order order: orderList){
+            List<OrderItem> orderItemList=orderDao.getOrderItemsByOrderId(order.getOrderId());
+            order.setOrderItemList(orderItemList);
+        }
+
+        return orderList;
+    }
+
+    @Override
+    public Integer countOrders(OrderQueryParams orderQueryParams) {
+
+        return orderDao.countOrders(orderQueryParams);
     }
 }
 

@@ -1,5 +1,6 @@
 package com.raychuang.springbootmail.dao;
 
+import com.raychuang.springbootmail.dto.OrderQueryParams;
 import com.raychuang.springbootmail.model.Order;
 import com.raychuang.springbootmail.model.OrderItem;
 
@@ -13,5 +14,9 @@ public interface OrderDao {
 
     //一張訂單裡面可能有很多的商品所以使用list
     List<OrderItem> getOrderItemsByOrderId(Integer orderId);
+
+    List<Order> getOrders(OrderQueryParams orderQueryParams);
+
+    Integer countOrders(OrderQueryParams orderQueryParams);
 
 }
